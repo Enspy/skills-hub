@@ -1,154 +1,134 @@
 'use client';
 
-import { useState } from 'react';
-import { Copy, Check, Terminal, BookOpen, RefreshCw } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Copy, Check } from 'lucide-react';
 
-const CONTEXT_URL =
-  'https://raw.githubusercontent.com/Enspy/skills-hub/main/context/boundless-context.md';
-
-const INSTALL_CMD = `curl -s ${CONTEXT_URL} -o ~/.claude/boundless-context.md`;
-
+const SAVE_PATH = '~/.claude/boundless-context.md';
 const CLAUDE_MD_LINE = '@boundless-context.md';
 
-function CopyButton({ text, label }: { text: string; label: string }) {
+function InlineCopy({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
-
   const copy = async () => {
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-
   return (
     <button
       onClick={copy}
-      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex-shrink-0 ${
-        copied
-          ? 'bg-emerald-500 text-white'
-          : 'bg-gray-900 text-white hover:bg-gray-700'
-      }`}
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded transition-colors"
+      style={{
+        background: copied ? '#16a34a' : 'var(--surface)',
+        color: copied ? 'white' : 'var(--fg-muted)',
+        fontSize: 11,
+        fontFamily: "'SF Mono', ui-monospace, monospace",
+      }}
     >
-      {copied ? <Check size={12} /> : <Copy size={12} />}
-      {copied ? 'Copied' : label}
+      {copied ? <Check size={10} /> : <Copy size={10} />}
+      {text}
     </button>
   );
 }
 
-function Step({
-  number,
-  title,
-  children,
-}: {
-  number: number;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex gap-4">
-      <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gray-900 text-white text-xs font-semibold flex items-center justify-center mt-0.5">
-        {number}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="font-semibold text-gray-900 mb-2">{title}</p>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function CodeBlock({ code, copyLabel }: { code: string; copyLabel: string }) {
-  return (
-    <div className="flex items-center gap-3 bg-gray-950 rounded-lg px-4 py-3">
-      <code className="flex-1 text-xs text-emerald-400 font-mono break-all">{code}</code>
-      <CopyButton text={code} label={copyLabel} />
-    </div>
-  );
-}
-
 export function ContextPage() {
+  const [content, setContent] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    fetch('/context/boundless-context.md')
+      .then((r) => r.text())
+      .then(setContent)
+      .catch(() => {});
+  }, []);
+
+  const copyContent = async () => {
+    if (!content) return;
+    await navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
   return (
-    <div className="max-w-2xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-3">
-          <BookOpen size={16} className="text-gray-400" />
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">One-time setup</span>
-        </div>
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Company Context</h2>
-        <p className="text-gray-500 text-sm leading-relaxed">
-          Skills work best when Claude knows Boundless — the positioning, vocabulary rules,
-          services, and tone. Install this context file once and every skill will use it
-          automatically.
-        </p>
+    <div>
+      <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--fg-muted)' }}>
+        Company Context
+      </p>
+      <h2 className="mb-3" style={{ fontSize: 28, fontWeight: 400, color: 'var(--fg)', letterSpacing: '-0.01em' }}>
+        Boundless Context File
+      </h2>
+      <p className="mb-8" style={{ fontSize: 15, color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: 520 }}>
+        Copy this into your Claude setup and every skill will automatically know Boundless
+        positioning, vocabulary, services, and tone. One-time setup.
+      </p>
+
+      {/* Preview */}
+      <div
+        className="relative mb-4 rounded-xl overflow-hidden"
+        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+      >
+        <pre
+          style={{
+            fontSize: 11,
+            lineHeight: 1.6,
+            color: 'var(--fg-muted)',
+            fontFamily: "'SF Mono', 'Fira Code', ui-monospace, monospace",
+            padding: '14px 16px',
+            margin: 0,
+            maxHeight: 160,
+            overflow: 'hidden',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+          }}
+        >
+          {content || 'Loading…'}
+        </pre>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 64,
+            background: 'linear-gradient(to bottom, transparent, var(--surface))',
+            pointerEvents: 'none',
+          }}
+        />
       </div>
+
+      {/* Copy button */}
+      <button
+        onClick={copyContent}
+        disabled={!content}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-medium transition-colors text-white mb-8"
+        style={{ background: copied ? '#16a34a' : 'var(--fg)', opacity: content ? 1 : 0.5 }}
+      >
+        {copied ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy context</>}
+      </button>
 
       {/* Steps */}
-      <div className="space-y-8">
-        <Step number={1} title="Download the context file">
-          <p className="text-sm text-gray-500 mb-3">
-            Run this in your terminal. It saves the Boundless context file to your Claude
-            global config folder.
-          </p>
-          <CodeBlock code={INSTALL_CMD} copyLabel="Copy command" />
-        </Step>
-
-        <Step number={2} title="Add it to your Claude config">
-          <p className="text-sm text-gray-500 mb-3">
-            Open <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded font-mono">~/.claude/CLAUDE.md</code> and
-            add this line at the top. Claude will load the context automatically in every session.
-          </p>
-          <CodeBlock code={CLAUDE_MD_LINE} copyLabel="Copy line" />
-          <p className="text-xs text-gray-400 mt-2">
-            If you don&apos;t have a CLAUDE.md yet, create it at <code className="font-mono">~/.claude/CLAUDE.md</code> and add the line.
-          </p>
-        </Step>
-
-        <Step number={3} title="Verify it's working">
-          <p className="text-sm text-gray-500 mb-3">
-            Open Claude Code and type this prompt. You should get a summary of Boundless
-            positioning back.
-          </p>
-          <CodeBlock
-            code="What do you know about Boundless positioning and vocabulary rules?"
-            copyLabel="Copy prompt"
-          />
-        </Step>
-      </div>
-
-      {/* Divider */}
-      <div className="border-t border-gray-200 my-10" />
-
-      {/* Update section */}
-      <div className="bg-gray-50 rounded-xl border border-gray-200 p-5">
-        <div className="flex items-start gap-3">
-          <RefreshCw size={15} className="text-gray-400 mt-0.5 flex-shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="font-semibold text-gray-900 text-sm mb-1">When messaging changes</p>
-            <p className="text-sm text-gray-500 mb-3">
-              When Boundless positioning or vocabulary is updated, re-run the same install
-              command to pull the latest version.
-            </p>
-            <div className="flex items-center gap-3 bg-white rounded-lg border border-gray-200 px-4 py-3">
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <Terminal size={12} className="text-gray-400 flex-shrink-0" />
-                <code className="text-xs text-gray-600 font-mono truncate">{INSTALL_CMD}</code>
-              </div>
-              <CopyButton text={INSTALL_CMD} label="Copy" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* View raw link */}
-      <div className="mt-6 text-center">
-        <a
-          href={CONTEXT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          View context file on GitHub
-        </a>
+      <div style={{ borderTop: '1px solid var(--border)', paddingTop: 24 }}>
+        <p className="text-xs font-bold uppercase tracking-wide mb-5" style={{ color: 'var(--fg-muted)' }}>
+          After copying
+        </p>
+        <ol className="space-y-4">
+          <li className="flex items-start gap-3" style={{ fontSize: 14, color: 'var(--fg-muted)', lineHeight: 1.6 }}>
+            <span style={{ color: 'var(--fg-faint)', flexShrink: 0, marginTop: 1 }}>1.</span>
+            <span>
+              Save the file to{' '}
+              <InlineCopy text={SAVE_PATH} />
+            </span>
+          </li>
+          <li className="flex items-start gap-3" style={{ fontSize: 14, color: 'var(--fg-muted)', lineHeight: 1.6 }}>
+            <span style={{ color: 'var(--fg-faint)', flexShrink: 0, marginTop: 1 }}>2.</span>
+            <span>
+              Add{' '}
+              <InlineCopy text={CLAUDE_MD_LINE} />
+              {' '}to your{' '}
+              <code style={{ fontSize: 12, fontFamily: "'SF Mono', ui-monospace, monospace" }}>~/.claude/CLAUDE.md</code>
+              {' '}so Claude loads it in every session.
+            </span>
+          </li>
+        </ol>
       </div>
     </div>
   );
