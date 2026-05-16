@@ -13,8 +13,7 @@ export function SkillCard({ skill, onClick }: { skill: Skill; onClick: () => voi
   return (
     <button
       onClick={onClick}
-      className="skill-card w-full text-left p-6 focus:outline-none focus:ring-2 focus:ring-inset"
-      style={{ background: 'var(--bg)', focusRingColor: 'var(--fg)' } as React.CSSProperties}
+      className="skill-card w-full text-left p-6 focus:outline-none"
     >
       <p
         className="text-xs font-bold mb-3 uppercase tracking-wide"

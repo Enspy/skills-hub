@@ -53,7 +53,7 @@ export function ContextPage() {
       <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--fg-muted)' }}>
         Company Context
       </p>
-      <h2 className="mb-3" style={{ fontSize: 28, fontWeight: 400, color: 'var(--fg)', letterSpacing: '-0.01em' }}>
+      <h2 className="mb-3" style={{ fontSize: 28, fontWeight: 600, color: 'var(--fg)', letterSpacing: '-0.015em' }}>
         Boundless Context File
       </h2>
       <p className="mb-8" style={{ fontSize: 15, color: 'var(--fg-muted)', lineHeight: 1.65, maxWidth: 520 }}>
@@ -100,7 +100,7 @@ export function ContextPage() {
         onClick={copyContent}
         disabled={!content}
         className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-medium transition-colors text-white mb-8"
-        style={{ background: copied ? '#16a34a' : 'var(--fg)', opacity: content ? 1 : 0.5 }}
+        style={{ background: copied ? '#16a34a' : 'var(--accent)', opacity: content ? 1 : 0.5 }}
       >
         {copied ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy context</>}
       </button>

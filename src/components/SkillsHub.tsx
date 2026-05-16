@@ -42,8 +42,8 @@ export function SkillsHub() {
 
       {/* ── Nav ── */}
       <nav
-        className="sticky top-0 z-40 flex items-center justify-between px-8"
-        style={{ height: 60, background: 'var(--bg)', borderBottom: '1px solid var(--border)' }}
+        className="nav-glass sticky top-0 z-40 flex items-center justify-between px-8"
+        style={{ height: 60, borderBottom: '1px solid var(--border)' }}
       >
         <div className="flex items-center gap-2.5">
           <div
@@ -62,7 +62,7 @@ export function SkillsHub() {
           className="text-xs font-medium px-4 py-1.5 rounded-full transition-colors"
           style={{
             border: '1px solid var(--border)',
-            background: showContext ? 'var(--fg)' : 'transparent',
+            background: showContext ? 'var(--accent)' : 'transparent',
             color: showContext ? 'white' : 'var(--fg-muted)',
           }}
         >
@@ -80,7 +80,7 @@ export function SkillsHub() {
           <div className="text-center px-6" style={{ paddingTop: 96, paddingBottom: 56 }}>
             <h1
               className="font-bold leading-tight mb-4"
-              style={{ fontSize: 56, letterSpacing: '-0.02em', color: 'var(--fg)', lineHeight: 1.05 }}
+              style={{ fontSize: 56, fontWeight: 600, letterSpacing: '-0.025em', color: 'var(--fg)', lineHeight: 1.05 }}
             >
               What are you working on?
             </h1>
@@ -94,9 +94,10 @@ export function SkillsHub() {
                 className="flex items-center"
                 style={{
                   border: '1px solid var(--border)',
-                  borderRadius: 16,
+                  borderRadius: 18,
                   padding: '14px 56px 14px 20px',
-                  background: 'var(--bg)',
+                  background: 'var(--card-bg)',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
                 }}
               >
                 <Search size={16} style={{ color: 'var(--fg-faint)', flexShrink: 0, marginRight: 10 }} />
@@ -163,9 +164,9 @@ export function SkillsHub() {
                     onClick={() => setActiveCategory(cat.id)}
                     className="flex-shrink-0 text-sm font-medium px-4 py-2 rounded-full transition-colors"
                     style={{
-                      background: active ? 'var(--fg)' : 'transparent',
+                      background: active ? 'var(--accent)' : 'transparent',
                       color: active ? 'white' : 'var(--fg-muted)',
-                      border: active ? '1px solid var(--fg)' : '1px solid var(--border)',
+                      border: active ? '1px solid var(--accent)' : '1px solid var(--border)',
                     }}
                   >
                     {cat.label}
@@ -185,7 +186,7 @@ export function SkillsHub() {
 
             {/* Grid */}
             {filteredSkills.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'var(--border)' }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 cards-grid">
                 {filteredSkills.map((skill) => (
                   <SkillCard key={skill.id} skill={skill} onClick={() => setSelectedSkill(skill)} />
                 ))}

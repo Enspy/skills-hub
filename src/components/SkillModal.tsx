@@ -45,7 +45,7 @@ export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => vo
     >
       <div
         className="modal-panel w-full sm:max-w-lg overflow-hidden"
-        style={{ background: 'var(--bg)', borderRadius: 16, border: '1px solid var(--border)' }}
+        style={{ background: 'var(--card-bg)', borderRadius: 20, border: '1px solid var(--border)', boxShadow: '0 20px 60px rgba(0,0,0,0.18)' }}
       >
         {/* Header */}
         <div className="flex items-start justify-between p-6 pb-4">
@@ -131,7 +131,7 @@ export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => vo
             onClick={copyPrompt}
             disabled={!promptContent}
             className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-medium transition-colors text-white mb-3"
-            style={{ background: copied ? '#16a34a' : 'var(--fg)', opacity: promptContent ? 1 : 0.5 }}
+            style={{ background: copied ? '#16a34a' : 'var(--accent)', opacity: promptContent ? 1 : 0.5 }}
           >
             {copied
               ? <><Check size={14} /> Copied</>
