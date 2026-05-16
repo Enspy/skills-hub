@@ -74,7 +74,7 @@ export function ContextPage() {
           <BookOpen size={16} className="text-gray-400" />
           <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">One-time setup</span>
         </div>
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Boundless Marketing Context</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">Company Context</h2>
         <p className="text-gray-500 text-sm leading-relaxed">
           Skills work best when Claude knows Boundless — the positioning, vocabulary rules,
           services, and tone. Install this context file once and every skill will use it

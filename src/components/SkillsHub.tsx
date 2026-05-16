@@ -50,14 +50,26 @@ export function SkillsHub() {
         />
 
         <div className="relative max-w-3xl mx-auto">
-          {/* Wordmark */}
-          <div className="flex items-center gap-3 mb-10">
-            <div className="w-7 h-7 rounded-md bg-blue-500 flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1L13 4V10L7 13L1 10V4L7 1Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
-              </svg>
+          {/* Wordmark + Company Context */}
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-md bg-blue-500 flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M7 1L13 4V10L7 13L1 10V4L7 1Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <span className="text-white font-semibold text-sm tracking-wide">Boundless Skills</span>
             </div>
-            <span className="text-white font-semibold text-sm tracking-wide">Boundless Skills</span>
+            <button
+              onClick={() => setShowContext(!showContext)}
+              className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
+                showContext
+                  ? 'bg-white text-gray-900 border-white'
+                  : 'text-blue-200 border-blue-700 hover:border-blue-500 hover:text-white'
+              }`}
+            >
+              Company Context
+            </button>
           </div>
 
           {/* Headline */}
@@ -131,16 +143,6 @@ export function SkillsHub() {
               {cat.label}
             </button>
           ))}
-          <button
-            onClick={() => setShowContext(true)}
-            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              showContext
-                ? 'bg-gray-900 text-white'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:text-gray-900'
-            }`}
-          >
-            Marketing Context
-          </button>
         </div>
 
         {/* Context page or skills grid */}
