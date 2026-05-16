@@ -5,11 +5,13 @@ import { Search, X } from 'lucide-react';
 import { SKILLS, CATEGORIES, Category, scoreSkill, Skill } from '@/data/skills';
 import { SkillCard } from './SkillCard';
 import { SkillModal } from './SkillModal';
+import { ContextPage } from './ContextPage';
 
 export function SkillsHub() {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<Category>('all');
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
+  const [showContext, setShowContext] = useState(false);
 
   const filteredSkills = useMemo(() => {
     let skills = SKILLS;
@@ -119,9 +121,9 @@ export function SkillsHub() {
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
+              onClick={() => { setActiveCategory(cat.id); setShowContext(false); }}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeCategory === cat.id
+                !showContext && activeCategory === cat.id
                   ? 'bg-gray-900 text-white'
                   : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:text-gray-900'
               }`}
@@ -129,50 +131,63 @@ export function SkillsHub() {
               {cat.label}
             </button>
           ))}
+          <button
+            onClick={() => setShowContext(true)}
+            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              showContext
+                ? 'bg-gray-900 text-white'
+                : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:text-gray-900'
+            }`}
+          >
+            Marketing Context
+          </button>
         </div>
 
-        {/* Search results header */}
-        {query.trim() && (
-          <div className="mb-5">
-            <p className="text-sm text-gray-500">
-              {filteredSkills.length === 0 ? (
-                'No skills matched. Try different keywords.'
-              ) : (
-                <>
-                  <span className="font-medium text-gray-900">{filteredSkills.length} skill{filteredSkills.length !== 1 ? 's' : ''}</span>
-                  {' '}matched for <span className="text-gray-900 italic">&ldquo;{query}&rdquo;</span>
-                </>
-              )}
-            </p>
-          </div>
-        )}
+        {/* Context page or skills grid */}
+        {showContext ? (
+          <ContextPage />
+        ) : (
+          <>
+            {query.trim() && (
+              <div className="mb-5">
+                <p className="text-sm text-gray-500">
+                  {filteredSkills.length === 0 ? (
+                    'No skills matched. Try different keywords.'
+                  ) : (
+                    <>
+                      <span className="font-medium text-gray-900">{filteredSkills.length} skill{filteredSkills.length !== 1 ? 's' : ''}</span>
+                      {' '}matched for <span className="text-gray-900 italic">&ldquo;{query}&rdquo;</span>
+                    </>
+                  )}
+                </p>
+              </div>
+            )}
 
-        {/* Skills grid */}
-        {filteredSkills.length > 0 ? (
-          <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {filteredSkills.map((skill) => (
-                <SkillCard
-                  key={skill.id}
-                  skill={skill}
-                  onClick={() => setSelectedSkill(skill)}
-                />
-              ))}
-            </div>
-          </div>
-        ) : query.trim() ? (
-          <div className="text-center py-16">
-            <p className="text-gray-400 text-sm">
-              No skills matched. Try searching for a task type like &ldquo;blog&rdquo;, &ldquo;outreach&rdquo;, or &ldquo;proposal&rdquo;.
-            </p>
-            <button
-              onClick={() => setQuery('')}
-              className="mt-3 text-sm text-blue-600 hover:underline"
-            >
-              Clear search
-            </button>
-          </div>
-        ) : null}
+            {filteredSkills.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {filteredSkills.map((skill) => (
+                  <SkillCard
+                    key={skill.id}
+                    skill={skill}
+                    onClick={() => setSelectedSkill(skill)}
+                  />
+                ))}
+              </div>
+            ) : query.trim() ? (
+              <div className="text-center py-16">
+                <p className="text-gray-400 text-sm">
+                  No skills matched. Try searching for a task type like &ldquo;blog&rdquo; or &ldquo;tweet&rdquo;.
+                </p>
+                <button
+                  onClick={() => setQuery('')}
+                  className="mt-3 text-sm text-blue-600 hover:underline"
+                >
+                  Clear search
+                </button>
+              </div>
+            ) : null}
+          </>
+        )}
       </div>
 
       {/* Footer */}
