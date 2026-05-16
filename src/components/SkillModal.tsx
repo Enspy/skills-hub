@@ -1,15 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { X, Copy, Check, ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { X, Copy, Check } from 'lucide-react';
 import { Skill } from '@/data/skills';
-
-const CATEGORY_COLORS: Record<string, string> = {
-  content: 'bg-violet-100 text-violet-700',
-  sales: 'bg-emerald-100 text-emerald-700',
-  strategy: 'bg-amber-100 text-amber-700',
-  pitch: 'bg-blue-100 text-blue-700',
-};
 
 const CATEGORY_LABELS: Record<string, string> = {
   content: 'Content & Copy',
@@ -20,25 +13,15 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => void }) {
   const [copied, setCopied] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleKey);
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', handleKey);
-      document.body.style.overflow = '';
-    };
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
   }, [onClose]);
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) onClose();
-  };
-
-  const copyCommand = async () => {
+  const copy = async () => {
     await navigator.clipboard.writeText(skill.command);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -46,45 +29,49 @@ export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => vo
 
   return (
     <div
-      className="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(11, 18, 33, 0.6)', backdropFilter: 'blur(4px)' }}
-      onClick={handleBackdropClick}
+      className="modal-backdrop fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+      style={{ background: 'rgba(13,13,13,0.5)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
-        ref={ref}
-        className="modal-panel relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden"
+        className="modal-panel w-full sm:max-w-lg overflow-hidden"
+        style={{ background: 'var(--bg)', borderRadius: 16, border: '1px solid var(--border)' }}
       >
         {/* Header */}
-        <div className="px-6 pt-6 pb-4 border-b border-gray-100">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${CATEGORY_COLORS[skill.category]}`}>
-                  {CATEGORY_LABELS[skill.category]}
-                </span>
-              </div>
-              <h2 className="text-xl font-semibold text-gray-900 leading-snug">{skill.title}</h2>
-            </div>
-            <button
-              onClick={onClose}
-              className="flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-            >
-              <X size={18} />
-            </button>
+        <div className="flex items-start justify-between p-6 pb-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--fg-muted)' }}>
+              {CATEGORY_LABELS[skill.category]}
+            </p>
+            <h2 style={{ fontSize: 22, fontWeight: 400, color: 'var(--fg)', lineHeight: 1.3 }}>
+              {skill.title}
+            </h2>
           </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-full transition-colors flex-shrink-0 ml-4"
+            style={{ color: 'var(--fg-muted)' }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--surface)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+          >
+            <X size={16} />
+          </button>
         </div>
 
         {/* Body */}
-        <div className="px-6 py-5 space-y-5">
-          <p className="text-gray-600 text-sm leading-relaxed">{skill.longDescription}</p>
+        <div className="px-6 pb-5 space-y-5">
+          <p style={{ fontSize: 15, color: 'var(--fg-muted)', lineHeight: 1.65 }}>
+            {skill.longDescription}
+          </p>
 
-          {/* Use cases */}
           <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">When to use</p>
-            <ul className="space-y-1.5">
+            <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--fg-muted)' }}>
+              When to use
+            </p>
+            <ul className="space-y-2">
               {skill.useCases.map((uc, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                  <ArrowRight size={13} className="mt-0.5 flex-shrink-0 text-gray-400" />
+                <li key={i} className="flex items-start gap-2.5" style={{ fontSize: 14, color: 'var(--fg)' }}>
+                  <span style={{ color: 'var(--fg-faint)', marginTop: 2, flexShrink: 0 }}>—</span>
                   {uc}
                 </li>
               ))}
@@ -92,32 +79,26 @@ export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => vo
           </div>
         </div>
 
-        {/* Footer — command copy */}
+        {/* Footer */}
         <div className="px-6 pb-6">
-          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
+          <div
+            className="flex items-center gap-3 p-3 rounded-xl"
+            style={{ background: 'var(--surface)' }}
+          >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-400 mb-0.5">Paste into Claude Code or Claude.ai</p>
-              <span className="command-badge font-semibold text-gray-800">{skill.command}</span>
+              <p className="text-xs mb-0.5" style={{ color: 'var(--fg-faint)' }}>
+                Paste into Claude Code or Claude.ai
+              </p>
+              <span className="command-mono font-semibold" style={{ color: 'var(--fg)' }}>
+                {skill.command}
+              </span>
             </div>
             <button
-              onClick={copyCommand}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                copied
-                  ? 'bg-emerald-500 text-white'
-                  : 'bg-gray-900 text-white hover:bg-gray-700'
-              }`}
+              onClick={copy}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-colors flex-shrink-0 text-white"
+              style={{ background: copied ? '#16a34a' : 'var(--fg)' }}
             >
-              {copied ? (
-                <>
-                  <Check size={14} />
-                  Copied
-                </>
-              ) : (
-                <>
-                  <Copy size={14} />
-                  Copy
-                </>
-              )}
+              {copied ? <><Check size={13} /> Copied</> : <><Copy size={13} /> Copy</>}
             </button>
           </div>
         </div>

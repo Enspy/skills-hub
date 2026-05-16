@@ -1,58 +1,43 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #FFFFFF;
+  --bg-subtle: #FAFAFA;
+  --bg-muted: #F4F4F4;
+  --fg: #0D0D0D;
+  --fg-muted: #6E6E6E;
+  --fg-faint: #ABABAB;
+  --border: #E5E5E5;
+  --surface: #F4F4F4;
+  --surface-hover: #EBEBEB;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+* { box-sizing: border-box; }
 
 body {
-  background: #f8f9fb;
-  color: #111827;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-.search-glow:focus-within {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), 0 8px 32px rgba(11, 18, 33, 0.4);
+.command-mono {
+  font-family: 'SF Mono', 'Fira Code', ui-monospace, monospace;
+  font-size: 12px;
 }
 
-.skill-card {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.skill-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.command-badge {
-  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-  font-size: 11px;
-  letter-spacing: 0.01em;
-}
-
-@keyframes flash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-.flash { animation: flash 0.2s ease; }
+.skill-card { transition: background 120ms ease; }
+.skill-card:hover { background: var(--bg-subtle); }
 
 .modal-backdrop { animation: fadeIn 0.15s ease; }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.modal-panel { animation: slideUp 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-panel { animation: slideUp 0.18s ease; }
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
