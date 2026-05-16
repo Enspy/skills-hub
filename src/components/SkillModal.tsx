@@ -36,7 +36,6 @@ export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => vo
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const lineCount = promptContent ? promptContent.split('\n').length : null;
 
   return (
     <div
@@ -136,7 +135,7 @@ export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => vo
           >
             {copied
               ? <><Check size={14} /> Copied</>
-              : <><Copy size={14} /> Copy prompt{lineCount ? ` · ${lineCount} lines` : ''}</>}
+              : <><Copy size={14} /> Copy prompt</>}
           </button>
 
           {/* Save path + command */}
