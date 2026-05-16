@@ -54,7 +54,7 @@ export function SkillsHub() {
               <path d="M7 1L13 4V10L7 13L1 10V4L7 1Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
             </svg>
           </div>
-          <span className="text-sm font-semibold" style={{ color: 'var(--fg)' }}>Boundless Skills</span>
+          <span className="text-sm font-semibold" style={{ color: 'var(--fg)' }}>Marketing Cheat Codes</span>
         </div>
 
         <button

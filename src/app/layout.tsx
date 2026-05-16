@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Boundless Skills",
+  title: "Marketing Cheat Codes",
   description: "Find the right Claude skill for your task.",
 };
 

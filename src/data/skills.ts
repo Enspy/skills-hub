@@ -21,8 +21,8 @@ export const SKILLS: Skill[] = [
     id: 'linkedincopy',
     command: '/linkedincopy',
     title: 'LinkedIn Copy',
-    description: 'Write and edit LinkedIn posts for Boundless — product launches, partnerships, thought leadership, and executive milestone posts.',
-    longDescription: 'Institutional register tuned to Clearwater Analytics and Anthropic, not crypto startup. Covers 5 post types with full templates. No emojis, no casual openers, no crypto slang.',
+    description: 'Write tighter, cleaner LinkedIn posts that actually land. Good for product launches, partnership announcements, thought leadership, and executive milestones.',
+    longDescription: 'Covers five post types — product launch, feature announcement, partnership, thought leadership, and executive milestone — each with a template and tone guide. Forces the right register: no emojis, no casual openers, no hype language.',
     category: 'content',
     keywords: ['linkedin', 'post', 'social', 'announcement', 'partnership', 'thought leadership', 'executive', 'product launch', 'feature'],
     useCases: [
@@ -36,8 +36,8 @@ export const SKILLS: Skill[] = [
     id: 'blogcopy',
     command: '/blogcopy',
     title: 'Blog Copy',
-    description: 'Write and structure Boundless blog posts — product launches, case studies, feature announcements, thought leadership, and SEO/GEO posts.',
-    longDescription: 'Research base from 9 companies (OpenAI, Anthropic, Stripe, Ramp, Mercury, Brex, ComplyAdvantage, Modern Treasury, SoFi). Covers 8 title formats, 6 narrative arcs, and GEO optimization techniques for AI search systems.',
+    description: 'Write and structure blog posts that read like they came from a strong editorial team. Good for product launches, case studies, SEO articles, and thought leadership.',
+    longDescription: 'Covers eight title formats, six narrative arcs, and GEO optimization techniques for AI search systems. Forces clean structure, strong hooks, and the right register — no jargon, no filler.',
     category: 'content',
     keywords: ['blog', 'article', 'post', 'seo', 'geo', 'case study', 'feature', 'product launch', 'thought leadership', 'write'],
     useCases: [
@@ -51,8 +51,8 @@ export const SKILLS: Skill[] = [
     id: 'tweetcopy',
     command: '/tweetcopy',
     title: 'X / Twitter Copy',
-    description: 'Write X/Twitter posts and threads for Boundless — launch threads, feature announcements, partnership posts, and thought leadership.',
-    longDescription: 'Short-form, punchy copy tuned for X/Twitter. Covers single posts and threads. Same institutional register as LinkedIn — no crypto slang, no emojis, no hype language.',
+    description: 'Write tighter, cleaner, more compelling tweet copy. Good for product announcements, launch threads, partnerships, and thought leadership.',
+    longDescription: 'Covers single posts and threads. Short-form, punchy, high-signal — no emojis, no crypto slang, no hype language. Institutional register that still sounds like a real human wrote it.',
     category: 'content',
     keywords: ['twitter', 'tweet', 'x', 'thread', 'social', 'announcement', 'short form', 'post'],
     useCases: [
