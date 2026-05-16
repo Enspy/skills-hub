@@ -25,14 +25,11 @@ export function SkillCard({ skill, onClick }: { skill: Skill; onClick: () => voi
       className="skill-card w-full text-left bg-white rounded-xl border border-gray-200 p-5 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
     >
       {/* Category badge */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="mb-3">
         <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${colors.bg} ${colors.text}`}>
           <span className={`w-1.5 h-1.5 rounded-full ${colors.dot}`} />
           {CATEGORY_LABELS[skill.category]}
         </span>
-        {skill.featured && (
-          <span className="text-xs font-medium text-gray-400">Featured</span>
-        )}
       </div>
 
       {/* Title */}

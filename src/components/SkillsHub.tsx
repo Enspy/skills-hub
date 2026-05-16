@@ -2,10 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
-import { SKILLS, CATEGORIES, Category, scoreSkill } from '@/data/skills';
+import { SKILLS, CATEGORIES, Category, scoreSkill, Skill } from '@/data/skills';
 import { SkillCard } from './SkillCard';
 import { SkillModal } from './SkillModal';
-import type { Skill } from '@/data/skills';
 
 export function SkillsHub() {
   const [query, setQuery] = useState('');
@@ -29,13 +28,6 @@ export function SkillsHub() {
 
     return skills;
   }, [query, activeCategory]);
-
-  const featuredSkills = useMemo(
-    () => SKILLS.filter((s) => s.featured),
-    []
-  );
-
-  const showFeatured = !query.trim() && activeCategory === 'all';
 
   return (
     <div className="min-h-screen">
@@ -104,10 +96,8 @@ export function SkillsHub() {
             <div className="flex flex-wrap gap-2 mt-4">
               {[
                 'LinkedIn post for a partnership',
-                'cold outreach to a CFO',
-                'press release for a product launch',
-                'prep for a discovery call',
                 'blog post on stablecoin compliance',
+                'tweet thread for a product launch',
               ].map((prompt) => (
                 <button
                   key={prompt}
@@ -157,29 +147,10 @@ export function SkillsHub() {
           </div>
         )}
 
-        {/* Featured section */}
-        {showFeatured && (
-          <div className="mb-10">
-            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Featured</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {featuredSkills.map((skill) => (
-                <SkillCard
-                  key={skill.id}
-                  skill={skill}
-                  onClick={() => setSelectedSkill(skill)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* All skills grid */}
+        {/* Skills grid */}
         {filteredSkills.length > 0 ? (
           <div>
-            {showFeatured && (
-              <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">All Skills</h2>
-            )}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {filteredSkills.map((skill) => (
                 <SkillCard
                   key={skill.id}
