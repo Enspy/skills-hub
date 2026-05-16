@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { X, Copy, Check } from 'lucide-react';
 import { Skill } from '@/data/skills';
 
-const INSTALLED_KEY = 'skills-hub-installed';
-
 const CATEGORY_LABELS: Record<string, string> = {
   content: 'Content & Copy',
   sales: 'Sales & GTM',
@@ -13,30 +11,9 @@ const CATEGORY_LABELS: Record<string, string> = {
   pitch: 'Pitch & Docs',
 };
 
-function getInstalled(): Set<string> {
-  try {
-    const raw = localStorage.getItem(INSTALLED_KEY);
-    return new Set(raw ? JSON.parse(raw) : []);
-  } catch {
-    return new Set();
-  }
-}
-
-function markInstalled(id: string) {
-  const installed = getInstalled();
-  installed.add(id);
-  localStorage.setItem(INSTALLED_KEY, JSON.stringify([...installed]));
-}
-
 export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => void }) {
   const [copied, setCopied] = useState(false);
-  const [promptCopied, setPromptCopied] = useState(false);
-  const [installed, setInstalled] = useState<boolean | null>(null);
   const [promptContent, setPromptContent] = useState<string>('');
-
-  useEffect(() => {
-    setInstalled(getInstalled().has(skill.id));
-  }, [skill.id]);
 
   useEffect(() => {
     fetch(`/skills/${skill.id}/SKILL.md`)
@@ -55,20 +32,11 @@ export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => vo
   const copyPrompt = async () => {
     if (!promptContent) return;
     await navigator.clipboard.writeText(promptContent);
-    setPromptCopied(true);
-    setTimeout(() => setPromptCopied(false), 2000);
-  };
-
-  const copyCommand = async () => {
-    await navigator.clipboard.writeText(skill.command);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleMarkInstalled = () => {
-    markInstalled(skill.id);
-    setInstalled(true);
-  };
+  const lineCount = promptContent ? promptContent.split('\n').length : null;
 
   return (
     <div
@@ -123,109 +91,67 @@ export function SkillModal({ skill, onClose }: { skill: Skill; onClose: () => vo
         </div>
 
         {/* Footer */}
-        {installed === null ? null : !installed ? (
-          /* ── Install flow ── */
-          <div className="px-6 pb-6" style={{ borderTop: '1px solid var(--border)', paddingTop: 20 }}>
-            <p className="text-xs font-bold uppercase tracking-wide mb-1" style={{ color: 'var(--fg-muted)' }}>
-              First time? Install this skill
-            </p>
-            <p className="text-sm mb-4" style={{ color: 'var(--fg-muted)', lineHeight: 1.5 }}>
-              Copy the full prompt below, then save it as a new file at{' '}
-              <code
-                className="px-1.5 py-0.5 rounded"
-                style={{ background: 'var(--surface)', fontSize: 12, fontFamily: "'SF Mono', ui-monospace, monospace" }}
-              >
-                ~/.claude/skills/{skill.id}/SKILL.md
-              </code>
-            </p>
+        <div className="px-6 pb-6" style={{ borderTop: '1px solid var(--border)', paddingTop: 20 }}>
 
-            {/* Prompt preview */}
+          {/* Prompt preview */}
+          <div
+            className="relative mb-4 rounded-xl overflow-hidden"
+            style={{ background: 'var(--surface)' }}
+          >
+            <pre
+              style={{
+                fontSize: 11,
+                lineHeight: 1.6,
+                color: 'var(--fg-muted)',
+                fontFamily: "'SF Mono', 'Fira Code', ui-monospace, monospace",
+                padding: '12px 14px',
+                margin: 0,
+                maxHeight: 110,
+                overflow: 'hidden',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+              }}
+            >
+              {promptContent || 'Loading…'}
+            </pre>
             <div
-              className="relative mb-3 rounded-xl overflow-hidden"
-              style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
-            >
-              <pre
-                style={{
-                  fontSize: 11,
-                  lineHeight: 1.6,
-                  color: 'var(--fg-muted)',
-                  fontFamily: "'SF Mono', 'Fira Code', ui-monospace, monospace",
-                  padding: '12px 14px',
-                  margin: 0,
-                  maxHeight: 120,
-                  overflow: 'hidden',
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-word',
-                }}
-              >
-                {promptContent || 'Loading…'}
-              </pre>
-              {/* Fade out */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 60,
-                  background: 'linear-gradient(to bottom, transparent, var(--surface))',
-                  pointerEvents: 'none',
-                }}
-              />
-            </div>
-
-            {/* Copy full prompt */}
-            <button
-              onClick={copyPrompt}
-              disabled={!promptContent}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-medium transition-colors mb-3 text-white"
-              style={{ background: promptCopied ? '#16a34a' : 'var(--fg)', opacity: promptContent ? 1 : 0.4 }}
-            >
-              {promptCopied
-                ? <><Check size={14} /> Copied — now save the file</>
-                : <><Copy size={14} /> Copy full prompt ({promptContent ? `${promptContent.split('\n').length} lines` : '…'})</>}
-            </button>
-
-            <button
-              onClick={handleMarkInstalled}
-              className="w-full py-2 text-sm transition-colors"
-              style={{ color: 'var(--fg-muted)' }}
-            >
-              I&apos;ve saved the file — show me the command →
-            </button>
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: 56,
+                background: 'linear-gradient(to bottom, transparent, var(--surface))',
+                pointerEvents: 'none',
+              }}
+            />
           </div>
-        ) : (
-          /* ── Use flow ── */
-          <div className="px-6 pb-6">
-            <div
-              className="flex items-center gap-3 p-3 rounded-xl"
-              style={{ background: 'var(--surface)' }}
-            >
-              <div className="flex-1 min-w-0">
-                <p className="text-xs mb-0.5" style={{ color: 'var(--fg-faint)' }}>
-                  Paste into Claude Code or Claude.ai
-                </p>
-                <span className="command-mono font-semibold" style={{ color: 'var(--fg)' }}>
-                  {skill.command}
-                </span>
-              </div>
-              <button
-                onClick={copyCommand}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-colors flex-shrink-0 text-white"
-                style={{ background: copied ? '#16a34a' : 'var(--fg)' }}
-              >
-                {copied ? <><Check size={13} /> Copied</> : <><Copy size={13} /> Copy</>}
-              </button>
-            </div>
-            <button
-              onClick={() => setInstalled(false)}
-              className="mt-3 text-xs"
-              style={{ color: 'var(--fg-faint)' }}
-            >
-              Not installed yet?
-            </button>
-          </div>
-        )}
+
+          {/* Copy button */}
+          <button
+            onClick={copyPrompt}
+            disabled={!promptContent}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-medium transition-colors text-white mb-3"
+            style={{ background: copied ? '#16a34a' : 'var(--fg)', opacity: promptContent ? 1 : 0.5 }}
+          >
+            {copied
+              ? <><Check size={14} /> Copied</>
+              : <><Copy size={14} /> Copy prompt{lineCount ? ` · ${lineCount} lines` : ''}</>}
+          </button>
+
+          {/* Save path + command */}
+          <p className="text-center text-xs leading-relaxed" style={{ color: 'var(--fg-faint)' }}>
+            Save to{' '}
+            <code style={{ fontFamily: "'SF Mono', ui-monospace, monospace" }}>
+              ~/.claude/skills/{skill.id}/SKILL.md
+            </code>
+            {' '}then use{' '}
+            <code style={{ fontFamily: "'SF Mono', ui-monospace, monospace" }}>
+              {skill.command}
+            </code>
+            {' '}in Claude.
+          </p>
+        </div>
       </div>
     </div>
   );
