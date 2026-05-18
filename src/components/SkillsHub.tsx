@@ -36,17 +36,34 @@ export function SkillsHub() {
           <span className="text-sm font-semibold" style={{ color: 'var(--fg)' }}>Marketing Cheat Codes</span>
         </div>
 
-        <button
-          onClick={() => setShowContext(!showContext)}
-          className="text-xs font-medium px-4 py-1.5 rounded-full transition-colors"
-          style={{
-            border: '1px solid var(--border)',
-            background: showContext ? 'var(--accent)' : 'transparent',
-            color: showContext ? 'white' : 'var(--fg-muted)',
-          }}
-        >
-          Company Context
-        </button>
+        <div className="flex items-center gap-3">
+          <a
+            href="https://drive.google.com/file/d/1Rsm246fopwYalrHb0XzHlDcZZIBJsob1/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-medium px-4 py-1.5 rounded-full transition-colors"
+            style={{
+              border: '1px solid var(--border)',
+              color: 'var(--fg-muted)',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--surface)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+            title="Download our design system built for Claude"
+          >
+            Brand
+          </a>
+          <button
+            onClick={() => setShowContext(!showContext)}
+            className="text-xs font-medium px-4 py-1.5 rounded-full transition-colors"
+            style={{
+              border: '1px solid var(--border)',
+              background: showContext ? 'var(--accent)' : 'transparent',
+              color: showContext ? 'white' : 'var(--fg-muted)',
+            }}
+          >
+            Company Context
+          </button>
+        </div>
       </nav>
 
       {showContext ? (
