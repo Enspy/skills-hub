@@ -1,4 +1,4 @@
-export type Category = 'all' | 'content';
+export type Category = 'all' | 'content' | 'outreach';
 
 export interface Skill {
   id: string;
@@ -14,6 +14,7 @@ export interface Skill {
 export const CATEGORIES: { id: Category; label: string }[] = [
   { id: 'all', label: 'All Skills' },
   { id: 'content', label: 'Content & Copy' },
+  { id: 'outreach', label: 'Outreach' },
 ];
 
 export const SKILLS: Skill[] = [
@@ -45,6 +46,21 @@ export const SKILLS: Skill[] = [
       'Case study on a customer or partner',
       'SEO article on a topic in your industry',
       'Thought leadership piece for your audience',
+    ],
+  },
+  {
+    id: 'linkedinoutreach',
+    command: '/linkedinoutreach',
+    title: 'LinkedIn Outreach',
+    description: 'Write short, direct LinkedIn connection notes and InMail messages. Tailored by vertical — payments, treasury, DeFi, payroll, or chain partnerships.',
+    longDescription: 'Built from real outreach patterns across 17 companies. Two opener types (fan opener vs. role-spotted), value prop tailored to their vertical, always closes with "Would be good to connect." — never suggests a call. Pulls from your company context file for positioning language.',
+    category: 'outreach',
+    keywords: ['linkedin', 'outreach', 'connection', 'inmail', 'cold message', 'prospecting', 'bd', 'sales'],
+    useCases: [
+      'Connection note to a fintech or payments operator',
+      'Outreach to a chain ecosystem or BD lead',
+      'InMail to an institutional DeFi or treasury contact',
+      'Cold message to a payroll or settlement company',
     ],
   },
   {
