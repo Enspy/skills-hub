@@ -48,6 +48,21 @@ export const SKILLS: Skill[] = [
     ],
   },
   {
+    id: 'launchvideo',
+    command: '/launchvideo',
+    title: 'Launch Video',
+    description: 'Create first drafts of storyboards for product launch videos.',
+    longDescription: 'Generates scene-by-scene storyboards for product launch videos. Covers title cards, UI demo sequences, feature highlights, and closing CTAs. Produces structured drafts you can hand directly to a video editor or motion designer.',
+    category: 'content',
+    keywords: ['video', 'storyboard', 'launch', 'script', 'scene', 'demo', 'product', 'animation'],
+    useCases: [
+      'First draft storyboard for a product launch video',
+      'Scene map for a feature announcement',
+      'Script structure for a demo walkthrough',
+      'Title card and CTA copy for a launch video',
+    ],
+  },
+  {
     id: 'tweetcopy',
     command: '/tweetcopy',
     title: 'X / Twitter Copy',
