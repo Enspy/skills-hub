@@ -5,6 +5,7 @@ import { Skill } from '@/data/skills';
 const CATEGORY_LABELS: Record<string, string> = {
   content: 'Content & Copy',
   outreach: 'Outreach',
+  pmm: 'PMM',
   sales: 'Sales & GTM',
   strategy: 'Strategy',
   pitch: 'Pitch & Docs',

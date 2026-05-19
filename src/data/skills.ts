@@ -1,4 +1,4 @@
-export type Category = 'all' | 'content' | 'outreach';
+export type Category = 'all' | 'content' | 'outreach' | 'pmm';
 
 export interface Skill {
   id: string;
@@ -15,6 +15,7 @@ export const CATEGORIES: { id: Category; label: string }[] = [
   { id: 'all', label: 'All Skills' },
   { id: 'content', label: 'Content & Copy' },
   { id: 'outreach', label: 'Outreach' },
+  { id: 'pmm', label: 'PMM' },
 ];
 
 export const SKILLS: Skill[] = [
@@ -54,7 +55,7 @@ export const SKILLS: Skill[] = [
     title: 'Competitive Analysis',
     description: 'Build a competitor comparison table for a sales deck slide. Covers research methodology, wedge-finding, table structure, and slide title.',
     longDescription: 'Finds the structural wedge — the architectural difference a competitor cannot fix — then builds a 5-row comparison table with strict cell pairing rules. Pulls from your company context file for positioning. Works for any company and any competitor.',
-    category: 'content',
+    category: 'pmm',
     keywords: ['competitive', 'comparison', 'competitor', 'battlecard', 'table', 'deck', 'slide', 'vs', 'versus', 'analysis'],
     useCases: [
       'Competitor comparison slide for a sales deck',
