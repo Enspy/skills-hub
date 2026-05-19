@@ -49,6 +49,21 @@ export const SKILLS: Skill[] = [
     ],
   },
   {
+    id: 'pressrelease',
+    command: '/pressrelease',
+    title: 'Press Release',
+    description: 'Write press releases and media pitches. Good for product launches, partnership announcements, chain expansions, executive hires, and newsjacking pitches.',
+    longDescription: 'Covers five release types plus executive thought leadership pitches. AP style throughout, institutional register, no enthusiasm language in quotes. Researched across Stripe, Anthropic, Modern Treasury, Clearwater Analytics, Chainalysis, ComplyAdvantage, and Fireblocks.',
+    category: 'content',
+    keywords: ['press release', 'pr', 'media', 'announcement', 'launch', 'partnership', 'newsjacking', 'wire', 'journalist'],
+    useCases: [
+      'Product launch press release',
+      'Partnership or chain expansion announcement',
+      'Executive hire announcement',
+      'Newsjacking pitch to a journalist',
+    ],
+  },
+  {
     id: 'linkedinoutreach',
     command: '/linkedinoutreach',
     title: 'LinkedIn Outreach',
