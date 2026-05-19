@@ -49,6 +49,21 @@ export const SKILLS: Skill[] = [
     ],
   },
   {
+    id: 'competitive',
+    command: '/competitive',
+    title: 'Competitive Analysis',
+    description: 'Build a competitor comparison table for a sales deck slide. Covers research methodology, wedge-finding, table structure, and slide title.',
+    longDescription: 'Finds the structural wedge — the architectural difference a competitor cannot fix — then builds a 5-row comparison table with strict cell pairing rules. Pulls from your company context file for positioning. Works for any company and any competitor.',
+    category: 'content',
+    keywords: ['competitive', 'comparison', 'competitor', 'battlecard', 'table', 'deck', 'slide', 'vs', 'versus', 'analysis'],
+    useCases: [
+      'Competitor comparison slide for a sales deck',
+      'Battlecard for a specific competitor',
+      'Finding the structural wedge against a new entrant',
+      'Updating a comparison table when a competitor launches something new',
+    ],
+  },
+  {
     id: 'pressrelease',
     command: '/pressrelease',
     title: 'Press Release',
